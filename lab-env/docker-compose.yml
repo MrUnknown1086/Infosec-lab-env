@@ -1,36 +1,42 @@
-version: '3.8'
+version: "3.9"
 
 services:
-  nginx:
-    image: nginx:latest
-    container_name: reverse-proxy
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - juiceshop
-      - webgoat
-      - dvwa
-
-  juiceshop:
+  juice-shop:
     image: bkimminich/juice-shop
     container_name: juice-shop
     restart: always
-    expose:
-      - "3000"
+    networks:
+      - vulnlab
 
   webgoat:
-    image: webgoat/webgoat:latest
+    image: webgoat/webgoat
     container_name: webgoat
     restart: always
-    expose:
-      - "8080"
-
+    networks:
+      - vulnlab
 
   dvwa:
     image: vulnerables/web-dvwa
     container_name: dvwa
     restart: always
-    expose:
-      - "80"
+    networks:
+      - vulnlab
+
+  nginx:
+    image: nginx:latest
+    container_name: reverse-proxy
+    restart: always
+    depends_on:
+      - juice-shop
+      - webgoat
+      - dvwa
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - vulnlab
+
+networks:
+  vulnlab:
+    driver: bridge
