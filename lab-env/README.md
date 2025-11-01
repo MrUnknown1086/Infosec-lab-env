@@ -21,19 +21,19 @@ This lab provides a safe, isolated environment for learning and practicing:
 
 1. ### Create the network connection for Vulnerable lab environment:
 
-'''bash
+```bash
 docker network create vulnlab
-'''
+```
 
 2. ### Then create images for your lab, such as DVWA, juiceshop etc.
-'''bash
+```bash
 docker run -d --name dvwa --network vulnlab vulnerables/web-dvwa
 docker run -d --name juice-shop --network vulnlab bkimminich/juice-shop
 docker run -d --name webgoat --network vulnlab webgoat/webgoat
-'''
+```
 
 3. ### Create a Nginx.conf file:
-'''nginx
+```nginx
 events {}
 
 http {
@@ -90,17 +90,17 @@ http {
         }
     }
 }
-'''
+```
 
 4. Now run the nginx reverse-proxy:
-'''bash
+```bash
 docker run -d --name reverse-proxy \
   --network vulnlab \
   -p 80:80 \
   -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro \
   --restart=always \
   nginx
-'''
+```
 
 
 ---
@@ -114,11 +114,11 @@ I hope U wont like to suffer the same I did ^_^
 
 - Make sure to add these lines in /etc/hosts to let know the host about the new connections:
 
-'''text
+```text
 127.0.0.1  dvwa.local
 127.0.0.1  juiceshop.local
 127.0.0.1  webgoat.local
-'''
+```
 
 ### Now you are READY to start your Web-Pentest Journey in a Safe environment !!
 ---
@@ -126,9 +126,9 @@ I hope U wont like to suffer the same I did ^_^
 
 Now open your browser and visit:
 
-- 'http://dvwa.local'
-- 'http://juiceshop.local'
-- 'http://webgoat.local'
+- `http://dvwa.local`
+- `http://juiceshop.local`
+- `http://webgoat.local`
 
 
 Thank You, regards Mr.Unknown ^--^
