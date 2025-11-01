@@ -19,18 +19,21 @@ This lab provides a safe, isolated environment for learning and practicing:
 
 **Beforehand** > Must have DOCKER and Kali *(Its my prefference, U may have any linux based OS)* Installed...
 
-1. ## Create the network connection for Vulnerable lab environment:
-' docker network create vulnlab '
+1. ### Create the network connection for Vulnerable lab environment:
 
-2. ## Then create images for your lab, such as DVWA, juiceshop etc.
-''' 
+'''bash
+docker network create vulnlab
+'''
+
+2. ### Then create images for your lab, such as DVWA, juiceshop etc.
+'''bash
 docker run -d --name dvwa --network vulnlab vulnerables/web-dvwa
 docker run -d --name juice-shop --network vulnlab bkimminich/juice-shop
 docker run -d --name webgoat --network vulnlab webgoat/webgoat
 '''
 
-3. ## Create a Nginx.conf file:
-'''
+3. ### Create a Nginx.conf file:
+'''nginx
 events {}
 
 http {
@@ -87,11 +90,10 @@ http {
         }
     }
 }
-
 '''
 
 4. Now run the nginx reverse-proxy:
-'''
+'''bash
 docker run -d --name reverse-proxy \
   --network vulnlab \
   -p 80:80 \
@@ -99,7 +101,10 @@ docker run -d --name reverse-proxy \
   --restart=always \
   nginx
 '''
+
+
 ---
+
 
 ## NOTE:
 Make sure to kee few thinga in mind to avoide mistakes I did:
@@ -108,7 +113,8 @@ In nginx proxy always keep **--restart=always** because if u forgot to add this 
 I hope U wont like to suffer the same I did ^_^
 
 - Make sure to add these lines in /etc/hosts to let know the host about the new connections:
-'''
+
+'''text
 127.0.0.1  dvwa.local
 127.0.0.1  juiceshop.local
 127.0.0.1  webgoat.local
@@ -120,9 +126,9 @@ I hope U wont like to suffer the same I did ^_^
 
 Now open your browser and visit:
 
-[http://dvwa.local]
-[http://juiceshop.local]
-[http://webgoat.local]
+- 'http://dvwa.local'
+- 'http://juiceshop.local'
+- 'http://webgoat.local'
 
 
 Thank You, regards Mr.Unknown ^--^
